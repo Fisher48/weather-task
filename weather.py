@@ -112,7 +112,16 @@ def print_countries(grouped: dict[str, list[WeatherData]]) -> None:
         )
 
 
+def configure_console_output() -> None:
+    if sys.platform == "win32":
+        for stream in (sys.stdout, sys.stderr):
+            if hasattr(stream, "reconfigure"):
+                stream.reconfigure(encoding="utf-8")
+
+
 def main() -> int:
+    configure_console_output()
+
     if not CITIES_FILE.exists():
         print(f"Файл со списком городов не найден: {CITIES_FILE}", file=sys.stderr)
         return 1
